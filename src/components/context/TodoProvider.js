@@ -18,11 +18,20 @@ const todoReducer = (todoList , action) => {
                 alert('please inter someting')
             }else if (todoList.active.find(item => item.header === action.payload)){
                 alert('this item alredy exist')
+
             }else{
+
+                if(todoList.finished.find(item=> item.header===action.payload)){
+                    let finshedIndex = todoList.finished.findIndex(item=> item.header===action.payload)
+                    console.log(finshedIndex);
+                    todoList.finished.splice(finshedIndex,1)
+                }
+
                 todoList.active.push({
                     header : action.payload,
                 });
                 todoList.totalActives = todoList.totalActives + 1
+
             }
             return{
                 ...todoList
@@ -30,14 +39,43 @@ const todoReducer = (todoList , action) => {
 
         case 'CHECKED' :
             let newItems = todoList.active.filter(item => item.header !== action.payload)
-            let checked = todoList.active.filter(item=> item.header===action.payload)
+            let checked = todoList.active.find(item=> item.header===action.payload)
             todoList.finished.push({
-                header : checked
+                header : checked.header
             })
             todoList.totalActives = todoList.totalActives - 1
             return{
                 ...todoList,
                 active : [...newItems]
+            }
+
+        case 'UNCHECKED' :
+            let newFinishes = todoList.finished.filter(item=> item.header !== action.payload)
+            if (todoList.active.find(item => item.header === action.payload)){
+                alert('this item alredy exist')
+            }else{
+                todoList.active.push({
+                    header : action.payload,
+                });
+                todoList.totalActives = todoList.totalActives + 1
+            }
+            return{
+                ...todoList,
+                finished : [...newFinishes]
+            }
+
+        case 'DELETE' :
+            if(todoList.active.find(item=> item.header===action.payload)){
+                let deleteIndex=todoList.active.findIndex(item=> item.header===action.payload)
+                todoList.active.splice(deleteIndex,1)
+                todoList.totalActives = todoList.totalActives - 1
+                
+            }else{
+                let deleteIndex=todoList.active.findIndex(item=> item.header===action.payload)
+                todoList.finished.splice(deleteIndex , 1)
+            }
+            return{
+                ...todoList
             }
     }
     
