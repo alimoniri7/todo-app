@@ -17,6 +17,9 @@ const StyledHeader = styled.span`
 font-weight: 300;
     color: ${(props=> props.flag ? '#393939' : '#ffffff78')};
     text-decoration: line-through;
+    @media (max-width:600px) {
+        font-size:.9rem;
+    }
 `
 
 

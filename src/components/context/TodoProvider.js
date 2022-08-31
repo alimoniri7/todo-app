@@ -78,6 +78,12 @@ const todoReducer = (todoList , action) => {
                 ...todoList
             }
 
+        case 'CLEAR_COMPLETED':
+            return{
+                ...todoList,
+                finished : []
+            }
+
         default:
             return{
                 ...todoList

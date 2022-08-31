@@ -15,6 +15,9 @@ import crossMark from '../../assets/images/icon-cross.svg'
 const StyledHeader = styled.span`
 font-weight: 500;
     color: ${(props=> props.flag ? '#393939' : '#ffffffcf')};
+    @media (max-width:600px) {
+        font-size:.9rem;
+    }
 `
 
 

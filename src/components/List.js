@@ -20,6 +20,7 @@ import mobilebgDark from '../assets/images/bg-mobile-dark.jpg'
 import mobilebgLight from '../assets/images/bg-mobile-light.jpg'
 import sun from '../assets/images/icon-sun.svg'
 import moon from '../assets/images/icon-moon.svg'
+import SubMenu from './SubMenu';
 
     const BgImage=styled.span`
         background-image:url(${props=> props.flag ? desktopbgLight : desktopbgDark});
@@ -55,8 +56,14 @@ import moon from '../assets/images/icon-moon.svg'
         width: 100%;
         margin-top: 2rem;
         ul{
-            border-radius: 7px;
+            border-radius: 7px 7px 0 0;
             background-color: ${(props=> props.flag ? '#fff' : '#2b2e49')};
+        }
+
+        @media (max-width: 600px) {
+            ul{
+                border-radius: 7px;
+            }
         }
     `
 
@@ -95,7 +102,7 @@ const List = () => {
                     </ul>
                 </TodoList>
 
-                <div>{todoList.totalActives}</div>
+                <SubMenu/>
             </div>
         </BgColor>
     );
