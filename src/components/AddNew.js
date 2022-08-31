@@ -1,17 +1,18 @@
-import React from 'react';
-import { useState } from 'react';
-import { useContext } from 'react';
+import React , { useState, useContext } from 'react';
+
 import { Todo } from './context/TodoProvider';
 
 const AddNew = () => {
     const [newItem , setNewItem] = useState('')
 
-    const {todoList , dispatch} = useContext(Todo)
+    const {dispatch} = useContext(Todo)
+
 
 // console.log(todoList);
     const submitHandler = (e) =>{
         e.preventDefault();
         dispatch({type : 'ADD_ITEM' , payload: newItem})
+        setNewItem('')
 
     }
 

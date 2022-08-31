@@ -69,11 +69,16 @@ const todoReducer = (todoList , action) => {
                 let deleteIndex=todoList.active.findIndex(item=> item.header===action.payload)
                 todoList.active.splice(deleteIndex,1)
                 todoList.totalActives = todoList.totalActives - 1
-                
+
             }else{
                 let deleteIndex=todoList.active.findIndex(item=> item.header===action.payload)
                 todoList.finished.splice(deleteIndex , 1)
             }
+            return{
+                ...todoList
+            }
+
+        default:
             return{
                 ...todoList
             }
