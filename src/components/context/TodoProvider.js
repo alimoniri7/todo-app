@@ -14,7 +14,7 @@ const todoReducer = (todoList , action) => {
     console.log(todoList);
     switch (action.type) {
         case 'ADD_ITEM' : 
-            if(action.payload === ''){
+            if(action.payload.trim() === ''){
                 alert('please inter someting')
             }else if (todoList.active.find(item => item.header === action.payload)){
                 alert('this item alredy exist')
@@ -27,7 +27,7 @@ const todoReducer = (todoList , action) => {
                     todoList.finished.splice(finshedIndex,1)
                 }
 
-                todoList.active.push({
+                todoList.active.unshift({
                     header : action.payload,
                 });
                 todoList.totalActives = todoList.totalActives + 1
@@ -40,7 +40,7 @@ const todoReducer = (todoList , action) => {
         case 'CHECKED' :
             let newItems = todoList.active.filter(item => item.header !== action.payload)
             let checked = todoList.active.find(item=> item.header===action.payload)
-            todoList.finished.push({
+            todoList.finished.unshift({
                 header : checked.header
             })
             todoList.totalActives = todoList.totalActives - 1
@@ -54,7 +54,7 @@ const todoReducer = (todoList , action) => {
             if (todoList.active.find(item => item.header === action.payload)){
                 alert('this item alredy exist')
             }else{
-                todoList.active.push({
+                todoList.active.unshift({
                     header : action.payload,
                 });
                 todoList.totalActives = todoList.totalActives + 1

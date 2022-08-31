@@ -1,0 +1,33 @@
+.liContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    height: 65px;
+    align-items: center;
+    border-bottom: 1px solid #9d9d9d7d;
+    border-radius: 7px;
+    div {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        gap: 20px;
+        button {
+            width: 25px;
+            height: 25px;
+            border: 1px solid #b9b9b99a;
+            border-radius: 1000px;
+        }
+    }
+}
+
+.mark {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #b9b9b99a;
+    border-radius: 1000px;
+    background: linear-gradient(156deg, rgba(0, 244, 204, 1) 0%, rgba(123, 29, 205, 1) 100%) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
