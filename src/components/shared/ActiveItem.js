@@ -37,13 +37,13 @@ const ActiveItem = ({header}) => {
     }
 
     return (
-        <li className={styles.liContainer}>
+        <div className={styles.liContainer}>
             <div>
                 <button onClick={checked}></button>
                 <StyledHeader flag={flag}>{header}</StyledHeader>
             </div>
             <button onClick={deleteItem}><img src={crossMark} alt="cross" /></button>
-        </li>
+        </div>
     );
 };
 

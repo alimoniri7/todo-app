@@ -1,6 +1,9 @@
 import React , { createContext } from 'react';
 import { useReducer } from 'react';
 
+// Toastify
+import { toast } from 'react-toastify';
+
 export const Todo = createContext()
 
 
@@ -15,21 +18,23 @@ const todoReducer = (todoList , action) => {
     switch (action.type) {
         case 'ADD_ITEM' : 
             if(action.payload.trim() === ''){
-                alert('please inter someting')
-            }else if (todoList.active.find(item => item.header === action.payload)){
-                alert('this item alredy exist')
+                toast.info('Please inter someting !', {
+                    theme: 'colored',
+                    });
+            }else if (todoList.active.find(item => item === action.payload)){
+                toast.warn('This item alredy exist !', {
+                    theme: 'colored',
+                    });
 
             }else{
 
-                if(todoList.finished.find(item=> item.header===action.payload)){
-                    let finshedIndex = todoList.finished.findIndex(item=> item.header===action.payload)
+                if(todoList.finished.find(item=> item===action.payload)){
+                    let finshedIndex = todoList.finished.findIndex(item=> item===action.payload)
                     console.log(finshedIndex);
                     todoList.finished.splice(finshedIndex,1)
                 }
 
-                todoList.active.unshift({
-                    header : action.payload,
-                });
+                todoList.active.unshift(action.payload);
                 todoList.totalActives = todoList.totalActives + 1
 
             }
@@ -38,11 +43,9 @@ const todoReducer = (todoList , action) => {
             }
 
         case 'CHECKED' :
-            let newItems = todoList.active.filter(item => item.header !== action.payload)
-            let checked = todoList.active.find(item=> item.header===action.payload)
-            todoList.finished.unshift({
-                header : checked.header
-            })
+            let newItems = todoList.active.filter(item => item !== action.payload)
+            let checked = todoList.active.find(item=> item===action.payload)
+            todoList.finished.unshift(checked)
             todoList.totalActives = todoList.totalActives - 1
             return{
                 ...todoList,
@@ -50,13 +53,11 @@ const todoReducer = (todoList , action) => {
             }
 
         case 'UNCHECKED' :
-            let newFinishes = todoList.finished.filter(item=> item.header !== action.payload)
-            if (todoList.active.find(item => item.header === action.payload)){
+            let newFinishes = todoList.finished.filter(item=> item !== action.payload)
+            if (todoList.active.find(item => item === action.payload)){
                 alert('this item alredy exist')
             }else{
-                todoList.active.unshift({
-                    header : action.payload,
-                });
+                todoList.active.unshift(action.payload);
                 todoList.totalActives = todoList.totalActives + 1
             }
             return{
@@ -65,13 +66,13 @@ const todoReducer = (todoList , action) => {
             }
 
         case 'DELETE' :
-            if(todoList.active.find(item=> item.header===action.payload)){
-                let deleteIndex=todoList.active.findIndex(item=> item.header===action.payload)
+            if(todoList.active.find(item=> item===action.payload)){
+                let deleteIndex=todoList.active.findIndex(item=> item===action.payload)
                 todoList.active.splice(deleteIndex,1)
                 todoList.totalActives = todoList.totalActives - 1
 
             }else{
-                let deleteIndex=todoList.active.findIndex(item=> item.header===action.payload)
+                let deleteIndex=todoList.active.findIndex(item=> item===action.payload)
                 todoList.finished.splice(deleteIndex , 1)
             }
             return{
@@ -82,6 +83,18 @@ const todoReducer = (todoList , action) => {
             return{
                 ...todoList,
                 finished : []
+            }
+        
+        case 'DND_ACTIVE':
+            return{
+                ...todoList,
+                active: [...action.payload]
+            }
+
+        case 'DND_FINISHED':
+            return{
+                ...todoList,
+                finished: [...action.payload]
             }
 
         default:
