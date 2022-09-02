@@ -52,7 +52,7 @@ const BgImage=styled.span`
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        height: 200px;
+        height: 30vh;
 }`
 
 
@@ -64,8 +64,9 @@ const MainList = () => {
 
 
   // theme toggle button function
-  const toggleTheme = () => {
-      setFlag(prevFlag=> !prevFlag)
+  const toggleTheme = async () => {
+      await setFlag(prevFlag=> !prevFlag)
+      localStorage.setItem('theme' ,String(flag))
   }
 
 
@@ -83,12 +84,25 @@ const MainList = () => {
             </div>
 
           <AddNew/>   
-          {!todoList.filterCompleted &&<ActiveList/>}
-          {!todoList.filterActive &&  <FinishedList/>}
+
+          {!todoList.active.length && !todoList.finished.length
+              ? <div className={styles.listPreview2} >Your todo list is empty !</div>
+              : <>
+                  {!todoList.active.length && !todoList.filterCompleted ? <div className={styles.listPreview1} >All todos have done !</div> : <>{!todoList.filterCompleted &&<ActiveList/>}</>}
+                  {!todoList.finished.length && !todoList.filterActive ? <div className={styles.listPreview1} >There is no completed todo</div> : <>{!todoList.filterActive &&  <FinishedList/>}</>}
+                  
+                  
+                </>
+          }
+
+
           <SubMenu/>
+
+          <p className={styles.subtitle}>Drag and drop to reorder list</p>
         </div>
 
         <ToastContainer/>
+
     </BgColor>
   );
 }

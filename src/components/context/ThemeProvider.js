@@ -1,10 +1,11 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 export const Theme = createContext()
 
 
 const ThemeProvider = ({children}) => {
-    const [flag , setFlag] = useState(true)
+
+    const [flag , setFlag] = useState(false)
 
 
     return (
