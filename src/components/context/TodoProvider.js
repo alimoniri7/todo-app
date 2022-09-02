@@ -11,6 +11,8 @@ const initialTodoList = {
     active : [],
     finished : [],
     totalActives : 0,
+    filterActive : false,
+    filterCompleted : false
 }
 
 const todoReducer = (todoList , action) => {
@@ -96,6 +98,27 @@ const todoReducer = (todoList , action) => {
                 ...todoList,
                 finished: [...action.payload]
             }
+
+        case 'FILTER_ACTIVE':
+            return{
+                ...todoList,
+                filterCompleted : false,
+                filterActive : true
+            }
+
+        case "FILTER_COMPLETED":
+            return{
+                ...todoList,
+                filterActive : false,
+                filterCompleted: true
+            }
+
+        case 'NO_FILTER' :
+            return{
+            ...todoList,
+            filterActive : false,
+            filterCompleted: false
+        }
 
         default:
             return{

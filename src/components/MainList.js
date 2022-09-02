@@ -1,8 +1,10 @@
 import React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 // Components
 import AddNew from "./AddNew";
+import SubMenu from "./SubMenu";
+import ActiveList from "./ActiveList";
+import FinishedList from "./FinishedList";
 
 // context
 import { useContext } from "react";
@@ -24,9 +26,6 @@ import moon from '../assets/images/icon-moon.svg'
 // styles
 import styled from "styled-components";
 import styles from './mainList.module.scss'
-import ActiveItem from "./shared/ActiveItem";
-import FinishedItem from "./shared/FinishedItem";
-import SubMenu from "./SubMenu";
 
 const BgColor = styled.div`
 background-color: ${(props=> props.flag ? '#e3e3e3' : '#0e1124')};
@@ -56,55 +55,12 @@ const BgImage=styled.span`
         height: 200px;
 }`
 
-const TodoList = styled.div`
-    width: 100%;
-    margin-top: 2rem;
-    li{
-        &:first-child{
-            border-radius: 7px 7px 0 0 ;
-        }
-        &:last-child{
-            border-radius: 0 0 7px 7px;
-        }
-        background-color: ${(props=> props.flag ? '#fff' : '#2b2e49')};
-    }
 
-    @media (max-width: 600px) {
-        li{
-            border-radius: 7px;
-        }
-}
-`
 
 const MainList = () => {
 
-    const {todoList , dispatch} = useContext(Todo)
     const {flag ,setFlag} = useContext(Theme)
-
-
-    // drag and drop functions
-  // Function to update list on drop
-  const activeHandleDrop = (droppedItem) => {
-    // Ignore drop outside droppable container
-    if (!droppedItem.destination) return;
-    var updatedList = [...todoList.active];
-    // Remove dragged item
-    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-    // Add dropped item
-    updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-    // Update State
-    dispatch({type:'DND_ACTIVE' , payload: updatedList})
-  };
-
-
-  const finishedHandleDrop = (droppedItem) => {
-    if (!droppedItem.destination) return;
-    var updatedList = [...todoList.finished];
-    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-    updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-    dispatch({type:'DND_FINISHED' , payload: updatedList})
-  };
-
+    const {todoList} = useContext(Todo)
 
 
   // theme toggle button function
@@ -126,74 +82,11 @@ const MainList = () => {
                 <button onClick={toggleTheme} >{flag ? <img src={moon} alt='moon'/> : <img src={sun} alt='sun'/>}</button>
             </div>
 
-          <AddNew/>
-
-
-          <DragDropContext onDragEnd={activeHandleDrop}>
-            <Droppable droppableId="list-container">
-              {(provided) => (
-                <TodoList
-                  flag={flag}
-                  className={styles.listContainer}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {todoList.active.map((item, index) => (
-                    <Draggable key={item} draggableId={item} index={index}>
-                      {(provided) => (
-                        <li
-                         
-                          ref={provided.innerRef}
-                          {...provided.dragHandleProps}
-                          {...provided.draggableProps}
-                        >
-                            <ActiveItem header={item} />
-                          
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </TodoList>
-              )}
-            </Droppable>
-          </DragDropContext>
-
-
-          <DragDropContext onDragEnd={finishedHandleDrop}>
-            <Droppable droppableId="list-container">
-              {(provided) => (
-                <TodoList
-                  flag={flag}
-                  className={styles.listContainer}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {todoList.finished.map((item, index) => (
-                    <Draggable key={item} draggableId={item} index={index}>
-                      {(provided) => (
-                        <li
-                          className={styles.itemContainer}
-                          ref={provided.innerRef}
-                          {...provided.dragHandleProps}
-                          {...provided.draggableProps}
-                        >
-                            <FinishedItem header={item} />
-                          
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </TodoList>
-              )}
-            </Droppable>
-          </DragDropContext>
-
+          <AddNew/>   
+          {!todoList.filterCompleted &&<ActiveList/>}
+          {!todoList.filterActive &&  <FinishedList/>}
           <SubMenu/>
         </div>
-
-
 
         <ToastContainer/>
     </BgColor>

@@ -12,6 +12,19 @@ const Container = styled.div`
     
 `
 
+const AllBtn = styled.button`
+    color: ${(props=> props.filterActive || props.filterCompleted ? '' : '#0004ff')};
+    font-weight: ${(props=> props.filterActive || props.filterCompleted ? '300' : '900')};
+`
+const ActiveBtn = styled.button`
+    color: ${(props=> props.filterActive ? '#2f42f0' : '')};
+    font-weight: ${(props=> props.filterActive ? '900' :'300' )};
+`
+const CompletedBtn = styled.button`
+    color: ${(props=> props.filterCompleted ? '#2f42f0' : '')};
+    font-weight: ${(props=> props.filterCompleted ? '900' : '300')};
+`
+
 
 const SubMenu = () => {
 
@@ -22,9 +35,9 @@ const SubMenu = () => {
         <Container flag={flag} className={styles.container}>
             <p>{todoList.totalActives} items left</p>
             <div>
-                <button className={flag ? styles.hoverLight : styles.hoverDark}>All</button>
-                <button className={flag ? styles.hoverLight : styles.hoverDark}>Active</button>
-                <button className={flag ? styles.hoverLight : styles.hoverDark}>Completed</button>
+                <AllBtn filterActive={todoList.filterActive} filterCompleted={todoList.filterCompleted}  onClick={()=> dispatch({type : 'NO_FILTER'})}>All</AllBtn>
+                <ActiveBtn filterActive={todoList.filterActive}  onClick={()=> dispatch({type : 'FILTER_ACTIVE'})}>Active</ActiveBtn>
+                <CompletedBtn filterCompleted={todoList.filterCompleted}  onClick={()=> dispatch({type : 'FILTER_COMPLETED'})}>Completed</CompletedBtn>
             </div>
 
             <button onClick={()=> dispatch({type:'CLEAR_COMPLETED'})}  className={flag ? styles.hoverLight : styles.hoverDark} >Clear Completed</button>
